@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preços de Combustível - Versão Estática</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Preços de Combustível</h1>
+        
+        <div class="filtros">
+            <div class="form-group">
+                <label for="posto">Posto:</label>
+                <select id="posto">
+                    <option value="">Todos os postos</option>
+                    <option value="Posto Petrobas">Posto Petrobas</option>
+                    <option value="Posto Auto Posto">Posto Auto Posto</option>
+                    <option value="Posto Valentim">Posto Valentim</option>
+                    <option value="Posto Ipiranga">Posto Ipiranga</option>
+                    <option value="Posto Shell">Posto Shell</option>
+                    <option value="Posto Ataide">Posto Ataide</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="combustivel">Combustível:</label>
+                <select id="combustivel">
+                    <option value="">Todos os combustíveis</option>
+                    <option value="Gasolina">Gasolina</option>
+                    <option value="Etanol">Etanol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Gasolina Aditivada">Gasolina Aditivada</option>
+                </select>
+            </div>
+            
+            <button id="btn-filtrar">Filtrar</button>
+            <button id="btn-limpar">Limpar</button>
+        </div>
+        
+        <div class="tabela-container">
+            <table id="tabela-precos">
+                <thead>
+                    <tr>
+                        <th>Posto</th>
+                        <th>Combustível</th>
+                        <th>Preço (R$)</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Os dados serão inseridos via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="dados.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Carrega os dados iniciais
+            carregarDados();
+            
+            // Configura os botões
+            document.getElementById('btn-filtrar').addEventListener('click', carregarDados);
+            document.getElementById('btn-limpar').addEventListener('click', () => {
+                document.getElementById('posto').value = '';
+                document.getElementById('combustivel').value = '';
+                carregarDados();
+            });
+        });
+
+        function carregarDados() {
+            const posto = document.getElementById('posto').value;
+            const combustivel = document.getElementById('combustivel').value;
+            
+            // Filtra os dados
+            const dadosFiltrados = dadosCombustivel.filter(item => {
+                return (posto === '' || item.posto === posto) && 
+                       (combustivel === '' || item.combustivel === combustivel);
+            });
+            
+            // Preenche a tabela
+            const tbody = document.querySelector('#tabela-precos tbody');
+            tbody.innerHTML = '';
+            
+            dadosFiltrados.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.posto}</td>
+                    <td>${item.combustivel}</td>
+                    <td>${item.preco.toFixed(2)}</td>
+                    <td>${item.data}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
